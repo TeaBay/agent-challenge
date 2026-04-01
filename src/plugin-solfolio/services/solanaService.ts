@@ -60,14 +60,14 @@ export class SolanaService {
   }
 
   private async call<T>(label: string, fn: (conn: Connection) => Promise<T>): Promise<T> {
-    return withRetry(async () => {
-      try {
-        return await fn(this.connection);
-      } catch (err) {
-        this.rotateRpc();
-        throw err;
-      }
-    }, label);
+    try {
+      // Retry against the current RPC MAX_RETRIES times before rotating
+      return await withRetry(() => fn(this.connection), label);
+    } catch (err) {
+      // All retries exhausted — rotate to next RPC for subsequent calls
+      this.rotateRpc();
+      throw err;
+    }
   }
 
   async getBalance(address: string): Promise<number> {

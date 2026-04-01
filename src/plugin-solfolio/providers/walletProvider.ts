@@ -91,13 +91,10 @@ export const walletProvider: Provider = {
     _state: State,
   ) {
     try {
-      // Try to extract wallet address from the current message first
+      // Read address from current message (read-only — wallet state is written
+      // exclusively by the GET_PORTFOLIO action to avoid unintended switches)
       const msgText = message.content?.text ?? "";
       const msgAddress = extractSolanaAddress(msgText);
-      if (msgAddress && isValidSolanaAddress(msgAddress)) {
-        // Persist for future turns
-        await runtime.setCache("solfolio:currentWallet", msgAddress);
-      }
 
       const address = msgAddress ?? (await runtime.getCache<string>("solfolio:currentWallet"));
       if (!address) {
