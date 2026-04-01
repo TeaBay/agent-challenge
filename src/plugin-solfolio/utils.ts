@@ -1,3 +1,5 @@
+import { PublicKey } from "@solana/web3.js";
+
 /**
  * Format a number as USD currency string.
  */
@@ -34,10 +36,17 @@ export function extractSolanaAddress(text: string): string | null {
 }
 
 /**
- * Validate a Solana address format.
+ * Validate a Solana address — must be a valid Ed25519 public key (32 bytes).
+ * Uses PublicKey constructor which rejects Bitcoin addresses and other non-Solana base58.
  */
 export function isValidSolanaAddress(address: string): boolean {
-  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);
+  if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address)) return false;
+  try {
+    new PublicKey(address);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**

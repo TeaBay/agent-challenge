@@ -2,7 +2,7 @@ import type { Provider, IAgentRuntime, Memory, State } from "@elizaos/core";
 import { SolanaService } from "../services/solanaService.js";
 import { JupiterService } from "../services/jupiterService.js";
 import type { PortfolioData, TokenBalance } from "../types.js";
-import { formatUsd, formatCrypto } from "../utils.js";
+import { formatUsd, formatCrypto, extractSolanaAddress, isValidSolanaAddress } from "../utils.js";
 
 const SOL_MINT = "So11111111111111111111111111111111111111112";
 const CACHE_KEY = "solfolio:portfolio";
@@ -87,13 +87,21 @@ export const walletProvider: Provider = {
 
   async get(
     runtime: IAgentRuntime,
-    _message: Memory,
+    message: Memory,
     _state: State,
   ) {
     try {
-      const address = await runtime.getCache<string>("solfolio:currentWallet");
+      // Try to extract wallet address from the current message first
+      const msgText = message.content?.text ?? "";
+      const msgAddress = extractSolanaAddress(msgText);
+      if (msgAddress && isValidSolanaAddress(msgAddress)) {
+        // Persist for future turns
+        await runtime.setCache("solfolio:currentWallet", msgAddress);
+      }
+
+      const address = msgAddress ?? (await runtime.getCache<string>("solfolio:currentWallet"));
       if (!address) {
-        return { text: "No wallet loaded. Ask the user to provide a Solana wallet address." };
+        return { text: "" }; // No wallet in context yet — don't inject anything
       }
 
       // Check cache
