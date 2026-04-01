@@ -142,7 +142,8 @@ export class SolanaService {
 
       if (pType === "transfer" || pType === "transferChecked") {
         type = "transfer";
-        amount = Number(info?.lamports ?? info?.tokenAmount?.uiAmount ?? 0);
+        const tokenAmountInfo = info?.tokenAmount as Record<string, unknown> | undefined;
+        amount = Number(info?.lamports ?? tokenAmountInfo?.uiAmount ?? 0);
         if (info?.lamports) amount /= 1e9;
         token = (info?.mint as string) ?? "SOL";
         description = `Transfer ${formatCrypto(amount)} ${token === "SOL" ? "SOL" : "tokens"}`;
