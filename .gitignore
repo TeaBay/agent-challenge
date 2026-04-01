@@ -92,3 +92,9 @@ pnpm-lock.yaml
 bun.lockb
 /.eliza/.elizadb
 /dist
+
+frontend/dist/
+frontend/node_modules/
+frontend/tsconfig.tsbuildinfo
+frontend/pnpm-lock.yaml
+frontend/pnpm-workspace.yaml
