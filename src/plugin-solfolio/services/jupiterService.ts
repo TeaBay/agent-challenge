@@ -110,8 +110,8 @@ export class JupiterService {
             }
           }
         }
-      } catch (err) {
-        console.error("CoinGecko ID price fetch error:", err);
+      } catch {
+        // CoinGecko ID price fetch failed; continue with partial results
       }
     }
 
@@ -134,9 +134,9 @@ export class JupiterService {
               }
             }
           }
-        } catch (err) {
-          console.error("CoinGecko contract price fetch error:", err);
-        }
+        } catch {
+            // CoinGecko contract price fetch failed for batch; continue
+          }
       }
     }
 
@@ -156,7 +156,6 @@ export class JupiterService {
       name: info.name,
       decimals: 6,
       logoURI: info.logoURI,
-      tags: [],
     }));
 
     try {
@@ -177,15 +176,13 @@ export class JupiterService {
           name: known?.name ?? "Unknown Token",
           decimals: 6,
           logoURI: known?.logoURI,
-          tags: [],
         };
       });
       this.tokenListCache = { tokens, expiresAt: now + TOKEN_LIST_CACHE_TTL_MS };
       this.tokenMapCache = null;
       return tokens;
-    } catch (err) {
-      console.error("Failed to fetch token list, using fallback:", (err as Error).message);
-      // Use hardcoded fallback
+    } catch {
+      // Token list fetch failed; use hardcoded fallback
       if (!this.tokenListCache) {
         this.tokenListCache = { tokens: fallback, expiresAt: now + PRICE_CACHE_TTL_MS };
         this.tokenMapCache = null;

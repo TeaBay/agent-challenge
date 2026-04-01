@@ -1,5 +1,6 @@
 import type { Action, IAgentRuntime, Memory, State, HandlerCallback } from "@elizaos/core";
 import type { PortfolioData } from "../types.js";
+import { CACHE_KEYS } from "../types.js";
 import { formatUsd } from "../utils.js";
 
 const ANALYSIS_KEYWORDS = [
@@ -37,7 +38,7 @@ export const analyzeHoldingsAction: Action = {
     const hasAnalysisIntent = ANALYSIS_KEYWORDS.some((kw) => text.includes(kw));
     if (!hasAnalysisIntent) return false;
 
-    const cached = await runtime.getCache<{ data: PortfolioData }>("solfolio:portfolio");
+    const cached = await runtime.getCache<{ data: PortfolioData }>(CACHE_KEYS.PORTFOLIO);
     return !!cached?.data;
   },
 
@@ -48,7 +49,7 @@ export const analyzeHoldingsAction: Action = {
     _options?: unknown,
     callback?: HandlerCallback,
   ): Promise<void> => {
-    const cached = await runtime.getCache<{ data: PortfolioData }>("solfolio:portfolio");
+    const cached = await runtime.getCache<{ data: PortfolioData }>(CACHE_KEYS.PORTFOLIO);
     const portfolio = cached?.data;
 
     if (!portfolio) {

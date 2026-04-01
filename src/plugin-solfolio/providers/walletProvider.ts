@@ -2,11 +2,8 @@ import type { Provider, IAgentRuntime, Memory, State } from "@elizaos/core";
 import { SolanaService } from "../services/solanaService.js";
 import { JupiterService } from "../services/jupiterService.js";
 import type { PortfolioData, TokenBalance } from "../types.js";
-import { formatUsd, formatCrypto, extractSolanaAddress, isValidSolanaAddress } from "../utils.js";
-
-const SOL_MINT = "So11111111111111111111111111111111111111112";
-const CACHE_KEY = "solfolio:portfolio";
-const CACHE_TTL_MS = 30_000;
+import { SOL_MINT, CACHE_KEYS, PORTFOLIO_CACHE_TTL_MS } from "../types.js";
+import { formatUsd, formatCrypto, extractSolanaAddress } from "../utils.js";
 
 const solanaService = new SolanaService();
 const jupiterService = new JupiterService();
@@ -96,13 +93,13 @@ export const walletProvider: Provider = {
       const msgText = message.content?.text ?? "";
       const msgAddress = extractSolanaAddress(msgText);
 
-      const address = msgAddress ?? (await runtime.getCache<string>("solfolio:currentWallet"));
+      const address = msgAddress ?? (await runtime.getCache<string>(CACHE_KEYS.CURRENT_WALLET));
       if (!address) {
         return { text: "" }; // No wallet in context yet — don't inject anything
       }
 
-      // Check cache
-      const cached = await runtime.getCache<{ data: PortfolioData; expiresAt: number }>(CACHE_KEY);
+      // Check cache (read-only — GET_PORTFOLIO action is the sole cache writer)
+      const cached = await runtime.getCache<{ data: PortfolioData; expiresAt: number }>(CACHE_KEYS.PORTFOLIO);
       if (cached && cached.expiresAt > Date.now() && cached.data.address === address) {
         return {
           text: formatPortfolioText(cached.data),
@@ -112,7 +109,6 @@ export const walletProvider: Provider = {
       }
 
       const portfolio = await buildPortfolio(address);
-      await runtime.setCache(CACHE_KEY, { data: portfolio, expiresAt: Date.now() + CACHE_TTL_MS });
 
       return {
         text: formatPortfolioText(portfolio),
@@ -126,4 +122,4 @@ export const walletProvider: Provider = {
   },
 };
 
-export { buildPortfolio, formatPortfolioText, solanaService, jupiterService };
+export { buildPortfolio, formatPortfolioText };

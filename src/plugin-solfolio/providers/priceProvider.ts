@@ -1,9 +1,9 @@
 import type { Provider, IAgentRuntime, Memory, State } from "@elizaos/core";
 import { JupiterService } from "../services/jupiterService.js";
 import type { PortfolioData } from "../types.js";
+import { SOL_MINT, CACHE_KEYS } from "../types.js";
 import { formatUsd } from "../utils.js";
 
-const SOL_MINT = "So11111111111111111111111111111111111111112";
 const jupiterService = new JupiterService();
 
 export const priceProvider: Provider = {
@@ -16,7 +16,7 @@ export const priceProvider: Provider = {
     _state: State,
   ) {
     try {
-      const cached = await runtime.getCache<{ data: PortfolioData }>("solfolio:portfolio");
+      const cached = await runtime.getCache<{ data: PortfolioData }>(CACHE_KEYS.PORTFOLIO);
       const portfolio = cached?.data;
 
       // Always include SOL; add portfolio token mints if available

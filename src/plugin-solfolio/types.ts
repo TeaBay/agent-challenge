@@ -39,3 +39,12 @@ export interface JupiterTokenInfo {
   decimals: number;
   logoURI?: string;
 }
+
+export const SOL_MINT = "So11111111111111111111111111111111111111112";
+
+export const CACHE_KEYS = {
+  PORTFOLIO: "solfolio:portfolio",
+  CURRENT_WALLET: "solfolio:currentWallet",
+} as const;
+
+export const PORTFOLIO_CACHE_TTL_MS = 30_000;

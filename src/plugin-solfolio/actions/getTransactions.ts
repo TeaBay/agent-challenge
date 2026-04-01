@@ -1,6 +1,7 @@
 import type { Action, IAgentRuntime, Memory, State, HandlerCallback } from "@elizaos/core";
 import { SolanaService } from "../services/solanaService.js";
 import type { PortfolioData, TransactionInfo } from "../types.js";
+import { CACHE_KEYS } from "../types.js";
 import { formatTimestamp, shortenAddress } from "../utils.js";
 
 const solanaService = new SolanaService();
@@ -36,7 +37,7 @@ export const getTransactionsAction: Action = {
     const hasTxIntent = TX_KEYWORDS.some((kw) => text.includes(kw));
     if (!hasTxIntent) return false;
 
-    const wallet = await runtime.getCache<string>("solfolio:currentWallet");
+    const wallet = await runtime.getCache<string>(CACHE_KEYS.CURRENT_WALLET);
     return !!wallet;
   },
 
@@ -47,7 +48,7 @@ export const getTransactionsAction: Action = {
     _options?: unknown,
     callback?: HandlerCallback,
   ): Promise<void> => {
-    const address = await runtime.getCache<string>("solfolio:currentWallet");
+    const address = await runtime.getCache<string>(CACHE_KEYS.CURRENT_WALLET);
 
     if (!address) {
       await callback?.({

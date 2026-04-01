@@ -6,6 +6,7 @@ import {
 } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import type { TransactionInfo } from "../types.js";
+import { formatCrypto } from "../utils.js";
 
 const RPC_URLS = [
   "https://api.mainnet-beta.solana.com",
@@ -180,10 +181,4 @@ export class SolanaService {
 
     return { signature, timestamp: blockTime, type, description, amount, token };
   }
-}
-
-function formatCrypto(value: number): string {
-  if (value >= 1) return value.toFixed(4);
-  if (value >= 0.0001) return value.toFixed(6);
-  return value.toExponential(2);
 }

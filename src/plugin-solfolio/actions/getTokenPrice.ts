@@ -1,8 +1,8 @@
 import type { Action, IAgentRuntime, Memory, State, HandlerCallback } from "@elizaos/core";
 import { JupiterService } from "../services/jupiterService.js";
 import { formatUsd } from "../utils.js";
+import { SOL_MINT } from "../types.js";
 
-const SOL_MINT = "So11111111111111111111111111111111111111112";
 const jupiterService = new JupiterService();
 
 const TOKEN_KEYWORDS = [

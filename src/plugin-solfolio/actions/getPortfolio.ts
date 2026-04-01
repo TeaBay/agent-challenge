@@ -2,9 +2,7 @@ import type { Action, IAgentRuntime, Memory, State, HandlerCallback } from "@eli
 import { buildPortfolio, formatPortfolioText } from "../providers/walletProvider.js";
 import { extractSolanaAddress, isValidSolanaAddress, formatUsd } from "../utils.js";
 import type { PortfolioData } from "../types.js";
-
-const CACHE_KEY = "solfolio:portfolio";
-const CACHE_TTL_MS = 30_000;
+import { CACHE_KEYS, PORTFOLIO_CACHE_TTL_MS } from "../types.js";
 
 export const getPortfolioAction: Action = {
   name: "GET_PORTFOLIO",
@@ -44,7 +42,7 @@ export const getPortfolioAction: Action = {
     let address = extractSolanaAddress(text);
 
     if (!address) {
-      address = (await runtime.getCache<string>("solfolio:currentWallet")) ?? null;
+      address = (await runtime.getCache<string>(CACHE_KEYS.CURRENT_WALLET)) ?? null;
     }
 
     if (!address || !isValidSolanaAddress(address)) {
@@ -63,10 +61,10 @@ export const getPortfolioAction: Action = {
       const portfolio: PortfolioData = await buildPortfolio(address);
 
       // Persist wallet + portfolio in cache
-      await runtime.setCache("solfolio:currentWallet", address);
-      await runtime.setCache(CACHE_KEY, {
+      await runtime.setCache(CACHE_KEYS.CURRENT_WALLET, address);
+      await runtime.setCache(CACHE_KEYS.PORTFOLIO, {
         data: portfolio,
-        expiresAt: Date.now() + CACHE_TTL_MS,
+        expiresAt: Date.now() + PORTFOLIO_CACHE_TTL_MS,
       });
 
       const tokenCount = portfolio.tokens.length;
