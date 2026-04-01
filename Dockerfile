@@ -34,9 +34,6 @@ COPY . .
 # Build TypeScript plugin
 RUN npx tsc
 
-# Patch plugin path to /app (local dev uses absolute path, Docker uses /app)
-RUN sed -i 's|/home/[^/]*/[^/]*/solfolio-agent/dist|/app/dist|g' characters/solfolio.character.json
-
 # Copy built frontend into static serve directory
 COPY --from=frontend-build /frontend/dist ./frontend/dist
 
