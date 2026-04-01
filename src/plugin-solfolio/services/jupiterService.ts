@@ -48,6 +48,7 @@ export class JupiterService {
   private priceCache = new Map<string, { price: TokenPrice; expiresAt: number }>();
   private tokenListCache: { tokens: JupiterTokenInfo[]; expiresAt: number } | null = null;
   private tokenMapCache: Map<string, JupiterTokenInfo> | null = null;
+  private tokenMapPromise: Promise<Map<string, JupiterTokenInfo>> | null = null;
 
   async getTokenPrices(mints: string[]): Promise<Map<string, TokenPrice>> {
     const results = new Map<string, TokenPrice>();
@@ -193,14 +194,16 @@ export class JupiterService {
 
   async getTokenMap(): Promise<Map<string, JupiterTokenInfo>> {
     if (this.tokenMapCache) return this.tokenMapCache;
+    if (this.tokenMapPromise) return this.tokenMapPromise;
 
-    const tokens = await this.getTokenList();
-    const map = new Map<string, JupiterTokenInfo>();
-    for (const t of tokens) {
-      map.set(t.address, t);
-    }
-    this.tokenMapCache = map;
-    return map;
+    this.tokenMapPromise = this.getTokenList().then((tokens) => {
+      const map = new Map<string, JupiterTokenInfo>();
+      for (const t of tokens) map.set(t.address, t);
+      this.tokenMapCache = map;
+      this.tokenMapPromise = null;
+      return map;
+    });
+    return this.tokenMapPromise;
   }
 
   async findTokenBySymbol(symbol: string): Promise<JupiterTokenInfo | undefined> {

@@ -1,5 +1,5 @@
 import type { Action, IAgentRuntime, Memory, State, HandlerCallback } from "@elizaos/core";
-import { buildPortfolio, formatPortfolioText } from "../providers/walletProvider.js";
+import { buildPortfolio } from "../providers/walletProvider.js";
 import { extractSolanaAddress, isValidSolanaAddress, formatUsd } from "../utils.js";
 import type { PortfolioData } from "../types.js";
 import { CACHE_KEYS, PORTFOLIO_CACHE_TTL_MS } from "../types.js";

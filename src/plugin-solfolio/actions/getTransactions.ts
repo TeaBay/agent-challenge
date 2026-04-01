@@ -1,6 +1,6 @@
 import type { Action, IAgentRuntime, Memory, State, HandlerCallback } from "@elizaos/core";
 import { SolanaService } from "../services/solanaService.js";
-import type { PortfolioData, TransactionInfo } from "../types.js";
+import type { TransactionInfo } from "../types.js";
 import { CACHE_KEYS } from "../types.js";
 import { formatTimestamp, shortenAddress } from "../utils.js";
 

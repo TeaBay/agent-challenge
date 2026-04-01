@@ -2,7 +2,7 @@ import type { Provider, IAgentRuntime, Memory, State } from "@elizaos/core";
 import { SolanaService } from "../services/solanaService.js";
 import { JupiterService } from "../services/jupiterService.js";
 import type { PortfolioData, TokenBalance } from "../types.js";
-import { SOL_MINT, CACHE_KEYS, PORTFOLIO_CACHE_TTL_MS } from "../types.js";
+import { SOL_MINT, CACHE_KEYS } from "../types.js";
 import { formatUsd, formatCrypto, extractSolanaAddress } from "../utils.js";
 
 const solanaService = new SolanaService();
