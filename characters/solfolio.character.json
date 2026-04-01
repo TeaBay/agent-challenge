@@ -4,7 +4,7 @@
   "plugins": [
     "@elizaos/plugin-bootstrap",
     "@elizaos/plugin-openai",
-    "\./dist/plugin-solfolio/index.js"
+    "./dist/plugin-solfolio/index.js"
   ],
   "settings": {
     "model": "Qwen3.5-27B-AWQ-4bit"
