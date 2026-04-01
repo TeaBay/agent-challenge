@@ -1,127 +1,167 @@
-# Nosana x ElizaOS Agent Challenge
+# 📊 SolFolio — Solana Portfolio Intelligence Agent
 
-![ElizaOS](./assets/NosanaXEliza.jpg)
+**Your personal AI-powered Solana portfolio analyst — running 100% on decentralized infrastructure.**
 
-Build your own **personal AI agent** using [ElizaOS](https://elizaos.com) and deploy it on the [Nosana](https://nosana.com) decentralized compute network. Win a share of **$3,000 USDC** in prizes.
+![SolFolio](assets/banner.png)
 
----
-
-## The Challenge
-
-Inspired by [OpenClaw](https://openclaw.ai/) — the self-hosted personal AI movement — this challenge is about giving AI back to the individual. Build an agent that runs on **your own infrastructure**, handles **your own tasks**, and keeps **your own data**.
-
-> **Theme: Personal AI Agents** — Build an AI agent that acts as a personal assistant, automate your life, or solve a real problem for yourself or your community. The use case is entirely up to you.
-
-**Framework:** [ElizaOS](https://elizaos.com) (latest v2)
-**Compute:** [Nosana](https://nosana.com) decentralized GPU network
-**Model:** Qwen3.5-27B (hosted endpoint provided by Nosana)
+> 🏆 Submission for the [Nosana x ElizaOS Agent Challenge](https://superteam.fun/earn/listing/nosana-builders-elizaos-challenge/) on Superteam Earn
 
 ---
 
-## Prizes — $3,000 USDC Total
+## Overview
 
-| Place | Prize |
-|-------|-------|
-| 🥇 1st | $1,000 USDC |
-| 🥈 2nd | $750 USDC |
-| 🥉 3rd | $450 USDC |
-| 4th | $200 USDC |
-| 5th–10th | $100 USDC each |
+SolFolio is a personal AI agent that gives you instant, conversational intelligence about any Solana wallet. Paste a wallet address and get a full portfolio breakdown — token holdings, USD valuations, allocation charts, transaction history, and AI-powered risk analysis — all through natural language chat.
+
+Built on [ElizaOS v2](https://elizaos.com) with a custom `plugin-solfolio` that connects to real-time on-chain data via Solana RPC and the Jupiter aggregator, SolFolio transforms raw blockchain data into actionable insights. The entire stack — from the Qwen3.5 LLM to the agent runtime — runs on the [Nosana](https://nosana.com) decentralized GPU network. No centralized cloud. No API keys to third-party AI providers. Your data, your infrastructure, your agent.
 
 ---
 
-## Schedule
+## ✨ Features
 
-Follow Nosana's Luma for more information: [Nosana Luma](https://luma.com/calendar/cal-RF19mq3EtF4juLc)
-
-![](./assets/image.png)
-
----
-
-## What to Build
-
-There are no strict requirements on use case — build whatever is most useful to you. Some ideas to get started:
-
-- 🗂️ **Personal assistant** — calendar, tasks, email drafting, reminders
-- 🔍 **Research agent** — web search, summarization, knowledge synthesis
-- 📱 **Social media manager** — Twitter/X, Telegram, Discord automation
-- 💰 **DeFi/crypto agent** — portfolio monitoring, on-chain alerts, trading insights
-- 🏠 **Home automation** — smart home control, IoT integration
-- 🛠️ **DevOps helper** — monitor services, automate deployments
-- 🎨 **Content creator** — blog posts, social copy, creative writing
-
-**Tip:** ElizaOS has a rich [plugin ecosystem](https://elizaos.github.io/eliza/docs/core/plugins). Explore existing plugins and templates before building from scratch — you might find 80% of what you need already exists.
+- 📊 **Instant portfolio analysis** — Enter any Solana wallet address and get a complete breakdown of SOL balance, SPL token holdings, and total USD value
+- 💬 **Natural language chat** — Ask questions in plain English, powered by Qwen3.5 running on Nosana's decentralized inference
+- 📈 **Real-time token prices** — Live price data from the Jupiter aggregator with 24h change tracking
+- 🔄 **Transaction history** — Recent transactions with automatic type detection (transfers, swaps, staking)
+- 🎯 **Portfolio allocation visualization** — Interactive pie charts showing how your holdings are distributed
+- 🧠 **AI-powered risk analysis** — Concentration metrics (HHI, effective positions), risk scoring, and actionable diversification suggestions
+- 🌐 **100% decentralized** — The full stack runs on Nosana's GPU network — no AWS, no GCP, no centralized cloud
+- 🔌 **Custom ElizaOS plugin** — Purpose-built `plugin-solfolio` with 4 actions and 2 providers for deep Solana integration
 
 ---
 
-## Getting Started
+## 📸 Screenshots
+
+<p align="center">
+  <img src="assets/screenshot-dashboard.png" alt="Portfolio Dashboard" width="80%" />
+  <br />
+  <em>Portfolio dashboard with allocation chart, token table, and live chat</em>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-chat.png" alt="Chat Analysis" width="80%" />
+  <br />
+  <em>Natural language portfolio analysis and risk insights</em>
+</p>
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Nosana GPU Network                          │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                   Docker Container                        │  │
+│  │                                                           │  │
+│  │  ┌─────────────┐    ┌──────────────────────────────────┐  │  │
+│  │  │   Frontend   │    │       ElizaOS v2 Runtime         │  │  │
+│  │  │  React+Vite  │◄──►  ┌────────────────────────────┐  │  │  │
+│  │  │  Tailwind    │    │  │    plugin-solfolio          │  │  │  │
+│  │  │  Recharts    │    │  │                            │  │  │  │
+│  │  │             │    │  │  Actions:                   │  │  │  │
+│  │  │  :5173 ──────┼────┤  │   • GET_PORTFOLIO          │  │  │  │
+│  │  │  (proxies    │    │  │   • GET_TOKEN_PRICE        │  │  │  │
+│  │  │   to :3000)  │    │  │   • GET_TRANSACTIONS       │  │  │  │
+│  │  │             │    │  │   • ANALYZE_HOLDINGS        │  │  │  │
+│  │  └─────────────┘    │  │                            │  │  │  │
+│  │                      │  │  Providers:                │  │  │  │
+│  │                      │  │   • walletProvider         │  │  │  │
+│  │                      │  │   • priceProvider          │  │  │  │
+│  │                      │  └──────────┬──────┬──────────┘  │  │  │
+│  │                      │             │      │              │  │  │
+│  │                      └─────────────┼──────┼──────────────┘  │  │
+│  └────────────────────────────────────┼──────┼─────────────────┘  │
+│                                       │      │                    │
+└───────────────────────────────────────┼──────┼────────────────────┘
+                                        │      │
+                          ┌─────────────┘      └──────────────┐
+                          ▼                                   ▼
+                ┌──────────────────┐                ┌──────────────────┐
+                │   Solana RPC     │                │   Jupiter API    │
+                │                  │                │                  │
+                │ • getBalance     │                │ • Price API v2   │
+                │ • getTokenAccts  │                │ • Token list     │
+                │ • getSignatures  │                │ • Token search   │
+                │ • getParsedTxs   │                │                  │
+                └──────────────────┘                └──────────────────┘
+```
+
+**Data flow:** The frontend communicates with the ElizaOS REST API (`/api`). When a user sends a message or wallet address, ElizaOS routes it to the appropriate `plugin-solfolio` action. The action queries Solana RPC for on-chain data and Jupiter for real-time prices, composes a natural-language response via Qwen3.5, and returns it to the frontend.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **AI Framework** | [ElizaOS v2](https://elizaos.com) | Agent runtime, plugin system, memory, REST API |
+| **LLM** | [Qwen3.5](https://huggingface.co/Qwen/Qwen3.5-27B) on Nosana | Natural language understanding and generation |
+| **Language** | TypeScript | Full-stack type safety |
+| **Frontend** | [React 19](https://react.dev/) | UI framework |
+| **Build Tool** | [Vite 6](https://vite.dev/) | Frontend dev server and bundler |
+| **Styling** | [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first styling |
+| **Charts** | [Recharts](https://recharts.org/) | Portfolio allocation visualization |
+| **Blockchain** | [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) | Solana RPC, transaction parsing |
+| **Token Data** | [@solana/spl-token](https://spl.solana.com/) | SPL token account parsing |
+| **Prices** | [Jupiter Price API v2](https://station.jup.ag/docs/apis/price-api) | Real-time token prices and search |
+| **Container** | [Docker](https://docker.com/) | Multi-stage build for production |
+| **Compute** | [Nosana](https://nosana.com) | Decentralized GPU deployment |
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 23+
-- pnpm (`npm install -g pnpm`)
-- Docker (for deployment)
-- Git
+| Requirement | Version | Notes |
+|-------------|---------|-------|
+| **Node.js** | 23+ | Required by ElizaOS v2 |
+| **pnpm** | 9+ | `npm install -g pnpm` |
+| **Docker** | Latest | For containerized deployment |
+| **Git** | Latest | — |
 
-### Quick Start
+### 1. Clone and Install
 
 ```bash
-# Fork this repo, then clone your fork
-git clone https://github.com/YOUR-USERNAME/agent-challenge
-cd agent-challenge
+git clone https://github.com/YOUR-USERNAME/solfolio-agent.git
+cd solfolio-agent
 
-# Copy and configure environment variables
-cp .env.example .env
-# Edit .env with your Nosana endpoint details
+# Install backend dependencies
+pnpm install
 
-# Install dependencies
-bun i -g @elizaos/cli
-
-# Start your agent in development mode
-elizaos dev
+# Install frontend dependencies
+cd frontend && pnpm install && cd ..
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the ElizaOS built-in client.
+### 2. Configure Environment
 
----
+```bash
+cp .env.example .env
+```
 
-## Claim Your Nosana Builders Credits
-
-All challenge participants get **free compute credits** to deploy and run their agents on Nosana.
-
-**How to claim:**
-
-1. Visit [nosana.com/builders-credits](https://nosana.com/builders-credits)
-2. Sign up or log in with your wallet
-3. Your credits will be added to your account automatically
-4. Use these credits to deploy your ElizaOS agent to the Nosana network
-
-These credits cover the compute costs for running your agent during the challenge period.
-
-> **Note:** Credits are airdropped twice a day. Please be patient if you don't see them immediately after signing up.
-
----
-
-## Configure Your LLM
-
-Nosana provides a hosted **Qwen3.5-27B-AWQ-4bit** endpoint for challenge participants. Update your `.env`:
+Edit `.env` with your Nosana endpoint (or use the defaults provided):
 
 ```env
+# Nosana-hosted LLM inference
 OPENAI_API_KEY=nosana
-OPENAI_API_URL=https://6vq2bcqphcansrs9b88ztxfs88oqy7etah2ugudytv2x.node.k8s.prd.nos.ci/v1
-MODEL_NAME=Qwen3.5-27B-AWQ-4bit
+OPENAI_API_URL=https://4ksj3tve5bazqwkuyqdhwdpcar4yutcuxphwhckrdxmu.node.k8s.prd.nos.ci/v1
+MODEL_NAME=Qwen/Qwen3.5-4B
+
+# Nosana-hosted embeddings
+OPENAI_EMBEDDING_URL=https://4yiccatpyxx773jtewo5ccwhw1s2hezq5pehndb6fcfq.node.k8s.prd.nos.ci/v1
+OPENAI_EMBEDDING_API_KEY=nosana
+OPENAI_EMBEDDING_MODEL=Qwen3-Embedding-0.6B
+OPENAI_EMBEDDING_DIMENSIONS=1024
+
+# Server
+SERVER_PORT=3000
 ```
 
-**Model Details:**
-- **Model ID:** `Qwen3.5-27B-AWQ-4bit`
-- **Max Context Length:** 60,000 tokens
-- **Provider:** Nosana decentralized inference
-- **Base Model:** cyankiwi/Qwen3.5-27B-AWQ-4bit
-
-### Option B: Local Development with Ollama
+<details>
+<summary>🔧 Alternative: Local development with Ollama</summary>
 
 ```bash
-ollama pull qwen3.5:27b # or a smaller one for your system
+ollama pull qwen3.5:27b
 ollama serve
 ```
 
@@ -131,338 +171,264 @@ OPENAI_API_URL=http://127.0.0.1:11434/v1
 MODEL_NAME=qwen3.5:27b
 ```
 
----
+</details>
 
-## Customize Your Agent
+### 3. Run in Development Mode
 
-### 1. Define your agent's character
+**Terminal 1 — ElizaOS backend:**
 
-Edit `characters/agent.character.json` to define your agent's personality, knowledge, and behavior:
-
-```json
-{
-  "name": "MyAgent",
-  "bio": ["Your agent's backstory and capabilities"],
-  "system": "Your agent's core instructions and behavior",
-  "plugins": ["@elizaos/plugin-bootstrap", "@elizaos/plugin-openai"],
-  "clients": ["direct"]
-}
-```
-
-### 2. Add plugins
-
-Extend your agent by adding plugins to `package.json` and your character file:
-
-| Plugin | Use Case |
-|--------|----------|
-| `@elizaos/plugin-bootstrap` | Required base plugin |
-| `@elizaos/plugin-openai` | OpenAI-compatible LLM (required for Nosana endpoint) |
-| `@elizaos/plugin-web-search` | Web search capability |
-| `@elizaos/plugin-telegram` | Telegram bot client |
-| `@elizaos/plugin-discord` | Discord bot client |
-| `@elizaos/plugin-twitter` | Twitter/X integration |
-| `@elizaos/plugin-browser` | Browser/web automation |
-| `@elizaos/plugin-sql` | Database access |
-
-Install a plugin:
 ```bash
-pnpm add @elizaos/plugin-web-search
+pnpm dev
+# Starts ElizaOS agent server on http://localhost:3000
 ```
 
-Add it to your character file:
-```json
-{
-  "plugins": ["@elizaos/plugin-bootstrap", "@elizaos/plugin-openai", "@elizaos/plugin-web-search"]
-}
+**Terminal 2 — Frontend dev server:**
+
+```bash
+cd frontend
+pnpm dev
+# Starts Vite dev server on http://localhost:5173
+# API calls are proxied to :3000 automatically
 ```
 
-### 3. Build custom actions (optional)
+Open [http://localhost:5173](http://localhost:5173) and paste a Solana wallet address to get started.
 
-Add your own custom logic in `src/index.ts`. See the example plugin already included.
+### 4. Docker Build and Run
 
-### 4. Persistent storage
+```bash
+# Build the multi-stage Docker image
+docker build -t solfolio-agent:latest .
 
-SQLite is configured by default — sufficient for development and small-scale agents. For a production-grade personal agent, consider:
+# Run locally
+docker run -p 3000:3000 --env-file .env solfolio-agent:latest
+```
 
-- A mounted volume on Nosana
-- External database (PostgreSQL, PlanetScale, etc.)
-- Decentralized storage (Arweave, IPFS)
+The Docker image uses a two-stage build:
+1. **Stage 1** — Builds the React frontend with Vite
+2. **Stage 2** — Installs ElizaOS dependencies, copies the built frontend into the serving directory, and starts the agent
 
 ---
 
-## Deploy to Nosana
+## 📁 Project Structure
 
-> **Important:** For this challenge, you must deploy your agent to Nosana's decentralized infrastructure. Do **not** use the standard `elizaos deploy` command — that deploys to centralized cloud providers. This challenge is about embracing decentralized compute.
+```
+solfolio-agent/
+├── characters/
+│   └── solfolio.character.json        # Agent personality, system prompt, examples
+├── src/
+│   ├── index.ts                       # Plugin entry point (exports solfolioPlugin)
+│   └── plugin-solfolio/
+│       ├── index.ts                   # Plugin definition — registers all actions & providers
+│       ├── types.ts                   # Shared TypeScript interfaces
+│       ├── utils.ts                   # Formatting helpers (USD, addresses, timestamps)
+│       ├── actions/
+│       │   ├── getPortfolio.ts        # GET_PORTFOLIO — fetch wallet holdings
+│       │   ├── getTokenPrice.ts       # GET_TOKEN_PRICE — look up live token prices
+│       │   ├── getTransactions.ts     # GET_TRANSACTIONS — recent transaction history
+│       │   └── analyzeHoldings.ts     # ANALYZE_HOLDINGS — risk & diversification analysis
+│       ├── providers/
+│       │   ├── walletProvider.ts      # Injects current portfolio into agent context
+│       │   └── priceProvider.ts       # Injects live price data into agent context
+│       └── services/
+│           ├── solanaService.ts       # Solana RPC wrapper (balance, tokens, transactions)
+│           └── jupiterService.ts      # Jupiter API wrapper (prices, token list, search)
+├── frontend/
+│   ├── package.json                   # React 19, Recharts, Tailwind, Vite
+│   ├── vite.config.ts                 # Dev server with API proxy to :3000
+│   ├── index.html
+│   └── src/
+│       ├── main.tsx                   # React entry point
+│       ├── App.tsx                    # Root layout — dashboard + chat panels
+│       ├── api.ts                     # ElizaOS REST API client
+│       ├── types.ts                   # Frontend type definitions
+│       ├── index.css                  # Tailwind base styles
+│       └── components/
+│           ├── WalletInput.tsx        # Address input with validation
+│           ├── PortfolioSummary.tsx   # Total value, SOL balance, change cards
+│           ├── TokenTable.tsx         # Sortable table of all token holdings
+│           ├── AllocationChart.tsx    # Recharts pie chart of portfolio allocation
+│           ├── TransactionFeed.tsx    # Recent transactions with type badges
+│           └── ChatPanel.tsx          # Full chat interface with message history
+├── nos_job_def/
+│   └── nosana_eliza_job_definition.json  # Nosana deployment job definition
+├── Dockerfile                         # Multi-stage build (frontend + ElizaOS)
+├── .env.example                       # Environment variable template
+├── package.json                       # ElizaOS deps, @solana/web3.js, scripts
+├── tsconfig.json
+└── LICENSE                            # MIT
+```
 
-**Why Nosana?**
-- **Decentralized** — Your agent runs on a distributed network of GPU providers, not AWS/GCP/Azure
-- **Cost-effective** — Use your free builders credits (no credit card required)
-- **Permissionless** — No vendor lock-in, full control over your infrastructure
-- **Challenge requirement** — All submissions must be deployed on Nosana
+---
 
-### Prerequisites
+## 🔌 ElizaOS Plugin — `plugin-solfolio`
 
-Before deploying, ensure you have:
-- [Docker](https://docs.docker.com/get-docker/) installed and running
-- A [Docker Hub](https://hub.docker.com/) account (free)
-- Your [Nosana builders credits](https://nosana.com/builders-credits) claimed
+SolFolio's core intelligence lives in a custom ElizaOS plugin that provides 4 **actions** (tools the agent can invoke) and 2 **providers** (context injected into every conversation turn).
 
-### Step 1: Build and Push Your Docker Image
+### Actions
 
-Your agent needs to be containerized and available on a public registry (Docker Hub) so Nosana nodes can pull and run it.
+| Action | Trigger | What It Does |
+|--------|---------|-------------|
+| `GET_PORTFOLIO` | User provides a wallet address or asks about "portfolio", "balance", "holdings" | Fetches SOL balance + all SPL token accounts, resolves USD values via Jupiter, caches result, and returns a formatted summary |
+| `GET_TOKEN_PRICE` | User asks about "price", "cost", "worth", or "how much is X" | Looks up any Solana token by symbol/name using Jupiter's verified token list and returns live price with 24h change |
+| `GET_TRANSACTIONS` | User asks about "transactions", "history", "activity", or "recent" | Fetches parsed transactions from Solana RPC, detects types (transfer, swap, stake), and formats with Solscan links |
+| `ANALYZE_HOLDINGS` | User asks about "risk", "diversification", "analysis", or "allocation" | Computes HHI (Herfindahl Index), effective positions, concentration risk, detects dust/scam tokens, and generates suggestions |
+
+### Providers
+
+| Provider | Description |
+|----------|-------------|
+| `walletProvider` | Automatically injects the currently loaded wallet's portfolio data into the agent's context so it can reference holdings in any response |
+| `priceProvider` | Injects live price data for SOL + all tracked portfolio tokens so the agent always has current pricing context |
+
+### Services
+
+| Service | API | Features |
+|---------|-----|----------|
+| `SolanaService` | Solana RPC (mainnet-beta, Ankr fallback) | Balance, token accounts, parsed transactions, automatic RPC rotation with retry/backoff |
+| `JupiterService` | Jupiter Price API v2 + Token List | Batch price fetching (100/request), token search, 30s price cache, 6h token list cache |
+
+---
+
+## ☁️ Deployment to Nosana
+
+### Step 1 — Build and Push Docker Image
 
 ```bash
-# Build your Docker image
-docker build -t yourusername/nosana-eliza-agent:latest .
+# Build
+docker build -t yourusername/solfolio-agent:latest .
 
-# Test it locally first (recommended)
-docker run -p 3000:3000 --env-file .env yourusername/nosana-eliza-agent:latest
+# Test locally
+docker run -p 3000:3000 --env-file .env yourusername/solfolio-agent:latest
 
-# Visit http://localhost:3000 to verify it works
-
-# Log in to Docker Hub
+# Push to Docker Hub (must be public)
 docker login
-
-# Push to Docker Hub (make it public)
-docker push yourusername/nosana-eliza-agent:latest
+docker push yourusername/solfolio-agent:latest
 ```
 
-> **Tip:** Replace `yourusername` with your actual Docker Hub username. Make sure your repository is **public** so Nosana nodes can pull it.
+### Step 2 — Configure Job Definition
 
-### Step 2: Configure Your Job Definition
-
-Edit `nos_job_def/nosana_eliza_job_definition.json` and update the Docker image reference:
+The Nosana job definition is in [`nos_job_def/nosana_eliza_job_definition.json`](./nos_job_def/nosana_eliza_job_definition.json). Update the `image` field with your Docker Hub username:
 
 ```json
 {
-  "version": "0.1",
-  "type": "container",
-  "meta": {
-    "trigger": "cli"
-  },
   "ops": [
     {
+      "id": "solfolio-agent",
       "type": "container/run",
-      "id": "eliza-agent",
       "args": {
-        "image": "yourusername/nosana-eliza-agent:latest",  // <- Change this
-        "ports": ["3000:3000"],
+        "image": "yourusername/solfolio-agent:latest",
+        "expose": 3000,
         "env": {
           "OPENAI_API_KEY": "nosana",
-          "OPENAI_API_URL": "https://6vq2bcqphcansrs9b88ztxfs88oqy7etah2ugudytv2x.node.k8s.prd.nos.ci/v1",
-          "MODEL_NAME": "Qwen3.5-27B-AWQ-4bit"
+          "OPENAI_API_URL": "https://...",
+          "MODEL_NAME": "Qwen/Qwen3.5-4B",
+          "SERVER_PORT": "3000",
+          "NODE_ENV": "production"
         }
       }
     }
-  ]
+  ],
+  "version": "0.1"
 }
 ```
 
-> **Security Note:** For production deployments, avoid hardcoding sensitive environment variables. Consider using Nosana secrets management or external secret stores.
+### Step 3 — Deploy via Nosana Dashboard
 
-### Step 3: Deploy via Nosana Dashboard (Easiest)
+1. Go to [dashboard.nosana.com/deploy](https://dashboard.nosana.com/deploy)
+2. Connect your Solana wallet
+3. Paste the contents of `nosana_eliza_job_definition.json`
+4. Select a compute market (e.g., `nvidia-3090`)
+5. Click **Deploy**
+6. Once running, you'll receive a public URL
 
-This is the recommended method for beginners:
-
-1. Visit the [Nosana Dashboard](https://dashboard.nosana.com/deploy)
-2. Connect your Solana wallet (you need this for authentication and using credits)
-3. Click **Expand** to open the job definition editor
-4. Copy and paste the contents of your `nos_job_def/nosana_eliza_job_definition.json` file
-5. Select your preferred compute market:
-   - `nvidia-3090` — High performance (recommended for production)
-   - `nvidia-rtx-4090` — Premium performance
-   - `cpu-only` — Budget option (slower inference)
-6. Click **Deploy**
-7. Wait for a node to pick up your job (usually 30-60 seconds)
-8. Once running, you'll receive a public URL to access your agent
-
-### Step 4: Deploy via Nosana CLI (Advanced)
-
-For developers who prefer the command line or want to automate deployments:
-
-1. First get your API key at [https://deploy.nosana.com/account/](https://deploy.nosana.com/account/)
-2. Edit the [Nosana ElizaOS Job Definition File](./nos_job_def/nosana_eliza_job_definition.json)
-3. Learn more about [Nosana Job Definition Here](https://learn.nosana.com/deployments/jobs/job-definition/intro.html)
+### Step 4 — Deploy via Nosana CLI (Alternative)
 
 ```bash
-# Install the Nosana CLI globally
 npm install -g @nosana/cli
 
-# Deploy your agent
 nosana job post \
   --file ./nos_job_def/nosana_eliza_job_definition.json \
-  --market nvidia-4090 \
+  --market nvidia-3090 \
   --timeout 300 \
-  --api <API_KEY>
+  --api <YOUR_API_KEY>
 
-# Monitor your deployment
+# Monitor
 nosana job status <job-id>
-
-# View logs
 nosana job logs <job-id>
 ```
 
-**CLI Flags Explained:**
-- `--file` — Path to your job definition JSON
-- `--market` — Which GPU market to use (nvidia-3090, nvidia-rtx-4090, etc.)
-- `--timeout` — Maximum job runtime in minutes
-
-### Step 5: Verify Your Deployment
-
-Once your job is running on Nosana:
-
-1. **Test the endpoint** — Visit the public URL provided by Nosana
-2. **Check agent responsiveness** — Send a test message to your agent
-3. **Monitor logs** — Use the Nosana Dashboard or CLI to view logs
-4. **Verify inference** — Ensure the Qwen3.5-27B model is responding correctly
-
-### Troubleshooting
-
-**Agent not starting?**
-- Check that your Docker image is public on Docker Hub
-- Verify your job definition JSON is valid
-- Ensure environment variables are correctly set
-- Check Nosana dashboard logs for error messages
-
-**Slow response times?**
-- Consider using a higher-tier GPU market (nvidia-rtx-4090)
-- Optimize your ElizaOS configuration
-- Check if the Nosana inference endpoint is reachable
-
-**Out of credits?**
-- Visit [nosana.com/builders-credits](https://nosana.com/builders-credits) to check your balance
-- Credits are airdropped twice daily — be patient if you just signed up
-
-**Need help?**
-- Join the [Nosana Discord](https://nosana.com/discord) for support
-- Check the [Nosana documentation](https://learn.nosana.io)
-- Review the [Nosana CLI docs](https://github.com/nosana-ci/nosana-cli)
+> 💡 Get your API key at [deploy.nosana.com/account](https://deploy.nosana.com/account/) and claim free builder credits at [nosana.com/builders-credits](https://nosana.com/builders-credits).
 
 ---
 
-## What You'll Build
+## 🔗 API
 
-Your submission should include:
-- **A working AI agent** built with ElizaOS
-- **A frontend interface** to interact with your agent (web UI, chat interface, dashboard, etc.)
-- **Deployment on Nosana** — your agent must run on Nosana's decentralized infrastructure
+SolFolio's frontend communicates with the ElizaOS REST API. In development, Vite proxies `/api` requests to `http://localhost:3000`.
 
-**The deeper your Nosana integration, the better your score.** We're looking for projects that fully embrace decentralized infrastructure — not just a minimal deployment, but thoughtful integration into your architecture.
+### Key Endpoints
 
-### Examples of Deep Integration (Better Scores):
-- Using Nosana for both training and inference
-- Multi-node deployments across Nosana's network
-- Custom deployment pipelines using Nosana CLI
-- Monitoring and observability integrated with Nosana infrastructure
-- Storage solutions that leverage decentralized networks
-- Creative use of Nosana's compute marketplace
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/agents` | List all running agents (returns agent IDs) |
+| `POST` | `/api/:agentId/message` | Send a message to the agent and get a response |
 
----
+### Example: Send a Message
 
-## Submission
+```bash
+# Get the agent ID
+AGENT_ID=$(curl -s http://localhost:3000/api/agents | jq -r '.agents[0].id')
 
-Submit your project via the official submission page: **[superteam.fun/earn/listing/nosana-builders-elizaos-challenge/](https://superteam.fun/earn/listing/nosana-builders-elizaos-challenge/)** before **April 14, 2026**.
-
-**Submission Checklist** — All items are required:
-
-- [ ] **Fork this repository** and build your agent on the `elizaos-challenge` branch
-- [ ] **Build a frontend/UI** for interacting with your agent
-- [ ] **Deploy to Nosana** and get your public deployment URL (agent must run on Nosana infrastructure)
-- [ ] **Star the following repositories:**
-  - [ ] [nosana-ci/agent-challenge](https://github.com/nosana-ci/agent-challenge)
-  - [ ] [nosana-ci/nosana-programs](https://github.com/nosana-ci/nosana-programs)
-  - [ ] [nosana-ci/nosana-kit](https://github.com/nosana-ci/nosana-kit)
-  - [ ] [nosana-ci/nosana-cli](https://github.com/nosana-ci/nosana-cli)
-- [ ] **Make a social media post** about your project on your platform of choice (X/Twitter, LinkedIn, Bluesky, Instagram, or other)
-- [ ] **Provide your GitHub fork link** (public repository)
-- [ ] **Provide your Nosana deployment URL** (running agent)
-- [ ] **Write a description** of your agent and what it does (≤300 words)
-- [ ] **Record a video demo** (<1 minute) showing your agent and frontend in action
-
-> **⚠️ Important:** Submissions that do not meet these requirements will not be considered.
-
-> For complete submission requirements and additional information, visit the [official challenge page](https://superteam.fun/earn/listing/nosana-builders-elizaos-challenge/).
-
----
-
-## Judging Criteria
-
-| Criterion | Weight |
-|-----------|--------|
-| Technical implementation | 25% |
-| Nosana integration depth | 25% |
-| Usefulness & UX | 25% |
-| Creativity & originality | 15% |
-| Documentation | 10% |
-
-**Judging Details:**
-- **Technical implementation (25%)** — Code quality, architecture, and ElizaOS best practices
-- **Nosana integration depth (25%)** — How deeply Nosana is integrated into your deployment and infrastructure
-- **Usefulness & UX (25%)** — Real-world applicability, frontend quality, and user experience
-- **Creativity & originality (15%)** — Innovative use cases and novel approaches
-- **Documentation (10%)** — Code quality, README, setup instructions
-
-**Judges:** DevRel Lead & Ecosystem Specialist, Nosana
-
----
-
-## Project Structure
-
+# Send a portfolio request
+curl -X POST "http://localhost:3000/api/${AGENT_ID}/message" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Analyze wallet 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+    "userId": "user1",
+    "roomId": "default"
+  }'
 ```
-├── characters/
-│   └── agent.character.json   # Your agent's character definition
-├── src/
-│   └── index.ts               # Custom plugin entry point (optional)
-├── nos_job_def/
-│   └── nosana_eliza_job_definition.json  # Nosana deployment config
-├── Dockerfile                 # Container configuration
-├── .env.example               # Environment variable template
-└── package.json
+
+The response is an array of message objects:
+
+```json
+[
+  { "text": "Fetching portfolio for `7xKX...AsU`... This may take a moment." },
+  { "text": "📊 **Portfolio Summary for `7xKX...AsU`**\n\n💰 **Total Value**: $1,234.56\n..." }
+]
 ```
 
 ---
 
-## Resources
+## 🏅 Judging Criteria Alignment
 
-### ElizaOS
-- [ElizaOS Documentation](https://elizaos.github.io/eliza/docs) — Full framework docs
-- [ElizaOS Plugin Directory](https://elizaos.github.io/eliza/docs/core/plugins) — Browse available plugins
-- [ElizaOS GitHub](https://github.com/elizaos/eliza) — Source code and examples
-- [ElizaOS Discord](https://discord.gg/elizaos) — Community support
-
-### Nosana
-- [Nosana Documentation](https://docs.nosana.io) — Platform guide
-- [Nosana Dashboard](https://dashboard.nosana.com) — Deploy and manage jobs
-- [Nosana CLI](https://github.com/nosana-ci/nosana-cli) — Command-line deployment
-- [Nosana Discord](https://nosana.com/discord) — Support and endpoint URL
-
-### Qwen3.5
-- [Qwen3.5-27B on HuggingFace](https://huggingface.co/Qwen/Qwen3.5-27B)
+| Criterion (Weight) | How SolFolio Addresses It |
+|-------------------|--------------------------|
+| **Technical Implementation (25%)** | Custom ElizaOS plugin with 4 actions, 2 providers, 2 services. Multi-RPC fallback with retry/backoff. Jupiter batch pricing. Herfindahl Index risk scoring. Full TypeScript. |
+| **Nosana Integration Depth (25%)** | LLM inference via Nosana-hosted Qwen3.5 endpoint. Embeddings via Nosana-hosted Qwen3-Embedding. Deployed as containerized job on Nosana GPU network. No centralized cloud dependency. |
+| **Usefulness & UX (25%)** | Real-world portfolio analytics. Split-panel UI (dashboard + chat). Interactive charts. Works with any public Solana wallet — no wallet connection needed. |
+| **Creativity & Originality (15%)** | Combines conversational AI with on-chain analytics. Risk analysis with financial metrics (HHI, effective diversification). Dust/scam token detection. Transaction type classification. |
+| **Documentation (10%)** | Comprehensive README with architecture diagram, full project structure, API docs, deployment guide, and setup instructions. |
 
 ---
 
-## Support & Community
+## 🙏 Built With
 
-- **Discord** — Join [Nosana Discord](https://nosana.com/discord) for support, the Nosana endpoint URL, and to connect with other builders
-- **Twitter/X** — Follow [@nosana_ai](https://x.com/nosana_ai) and [@elizaos](https://x.com/elizaos) for updates
-- **GitHub** — Open an issue in this repo if you find problems with the template
-
----
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=nosana-ci%2Fagent-challenge&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=nosana-ci/agent-challenge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=nosana-ci/agent-challenge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=nosana-ci/agent-challenge&type=date&legend=top-left" />
- </picture>
-</a>
-
-## License
-
-This template is open source and available under the [MIT License](./LICENSE).
+- [ElizaOS](https://elizaos.com) — The AI agent framework that makes this possible
+- [Nosana](https://nosana.com) — Decentralized GPU compute for truly permissionless AI
+- [Jupiter](https://jup.ag) — Solana's leading DEX aggregator and price oracle
+- [Solana](https://solana.com) — The blockchain powering the entire data layer
+- [Qwen3.5](https://huggingface.co/Qwen) — The LLM brain behind the conversational interface
 
 ---
 
-**Built with ElizaOS · Deployed on Nosana · Powered by Qwen3.5**
+## 📄 License
+
+This project is open source and available under the [MIT License](./LICENSE).
+
+---
+
+<p align="center">
+  <strong>Built with ElizaOS · Deployed on Nosana · Powered by Qwen3.5</strong>
+  <br />
+  <em>Your portfolio. Your agent. Your infrastructure.</em>
+</p>
